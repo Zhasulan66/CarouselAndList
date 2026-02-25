@@ -1,4 +1,4 @@
-package com.zhasu.carouselandlist.ui.theme
+package com.zhasu.carouselandlist.presentation.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
