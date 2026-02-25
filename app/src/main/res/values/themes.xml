@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.CarouselAndList" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.CarouselAndList" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimaryDark">@color/blue</item>
+        <item name="colorAccent">@color/blue</item>
+    </style>
+
+    <style name="RoundedSquare">
+        <item name="cornerSize">8.dp</item>
+    </style>
 </resources>

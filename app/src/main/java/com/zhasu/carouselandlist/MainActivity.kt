@@ -1,47 +1,38 @@
 package com.zhasu.carouselandlist
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.zhasu.carouselandlist.ui.theme.CarouselAndListTheme
+import androidx.appcompat.app.AppCompatActivity
+import com.zhasu.carouselandlist.data.local.listData
+import com.zhasu.carouselandlist.databinding.ActivityMainBinding
+import com.zhasu.carouselandlist.presentation.components.bottomsheet.FabManager
+import com.zhasu.carouselandlist.presentation.components.carousel.CarouselManager
+import com.zhasu.carouselandlist.presentation.components.naturelist.ListManager
+import com.zhasu.carouselandlist.presentation.components.searchbar.SearchManager
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
+    private var currentFilteredList = listData
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            CarouselAndListTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
-        }
-    }
-}
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+        // Init Managers
+        val carouselManager = CarouselManager(binding, listData)
+        val listManager = ListManager(binding, listData)
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    CarouselAndListTheme {
-        Greeting("Android")
+        carouselManager.setup()
+        listManager.setup()
+
+        FabManager(binding, supportFragmentManager) { currentFilteredList }.setup()
+
+        SearchManager(binding) { query ->
+            currentFilteredList = listData.filter { it.title.contains(query, true) }
+
+            carouselManager.updateCarousel(currentFilteredList)
+            listManager.updateList(currentFilteredList)
+        }.setup()
     }
 }
