@@ -27,25 +27,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.zhasu.carouselandlist.data.local.listData
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.zhasu.carouselandlist.presentation.components.BottomSheetContent
 import com.zhasu.carouselandlist.presentation.components.ImageCarousel
 import com.zhasu.carouselandlist.presentation.components.ListItem
 import com.zhasu.carouselandlist.presentation.components.SearchBar
 import com.zhasu.carouselandlist.presentation.ui.theme.BlueLight
 import com.zhasu.carouselandlist.presentation.ui.theme.CarouselAndListTheme
+import com.zhasu.carouselandlist.presentation.viewmodels.FruitViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(){
-    val imagesOnly = listData.map { it.resId }
+fun MainScreen() {
+    val fruitViewModel = hiltViewModel<FruitViewModel>()
+    val fruitList by fruitViewModel.fruits.collectAsStateWithLifecycle()
+
+    val imagesOnly = fruitList.map { it.resId }
     var searchQuery by remember { mutableStateOf("") }
 
-    val filteredItems = remember(searchQuery, listData) {
+    val filteredItems = remember(searchQuery, fruitList) {
         if (searchQuery.isEmpty()) {
-            listData
+            fruitList
         } else {
-            listData.filter { it.title.contains(searchQuery, ignoreCase = true) }
+            fruitList.filter { it.title.contains(searchQuery, ignoreCase = true) }
         }
     }
 
@@ -69,28 +74,32 @@ fun MainScreen(){
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            Column(
+            LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(24.dp)
             ) {
-                ImageCarousel(imagesOnly)
+                item {
+                    ImageCarousel(imagesOnly)
 
-                SearchBar(
-                    query = searchQuery,
-                    onQueryChange = { searchQuery = it }
-                )
-                Spacer(modifier = Modifier.height(8.dp))
+                    SearchBar(
+                        query = searchQuery,
+                        onQueryChange = { searchQuery = it }
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
 
                 if (filteredItems.isNotEmpty()) {
-                    LazyColumn {
-                        items(filteredItems, key = { it.id }) { natureItem ->
-                            ListItem(natureItem)
-                            Spacer(modifier = Modifier.height(12.dp))
-                        }
+
+                    items(filteredItems, key = { it.id }) { natureItem ->
+                        ListItem(natureItem)
+                        Spacer(modifier = Modifier.height(12.dp))
                     }
+
                 } else {
-                    Text("No results found", modifier = Modifier.padding(16.dp))
+                    item {
+                        Text("No results found", modifier = Modifier.padding(16.dp))
+                    }
                 }
 
             }
@@ -103,7 +112,7 @@ fun MainScreen(){
                 sheetState = sheetState,
                 containerColor = Color.White
             ) {
-                BottomSheetContent(listData)
+                BottomSheetContent(fruitList)
             }
         }
     }

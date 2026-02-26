@@ -26,7 +26,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zhasu.carouselandlist.R
-import com.zhasu.carouselandlist.data.local.listData
 import com.zhasu.carouselandlist.domain.model.NatureItem
 import com.zhasu.carouselandlist.presentation.ui.theme.CarouselAndListTheme
 
@@ -78,6 +77,6 @@ fun ListItem(
 @Composable
 fun ListItemPreview() {
     CarouselAndListTheme {
-        ListItem(listData[0])
+        ListItem(NatureItem(1, "Apple", "subtitle", R.drawable.nature2))
     }
 }
