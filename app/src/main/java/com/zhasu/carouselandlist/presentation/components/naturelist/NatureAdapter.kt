@@ -27,8 +27,8 @@ class NatureAdapter : ListAdapter<NatureItem, NatureAdapter.ViewHolder>(DiffCall
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
         holder.title.text = item.title
-        holder.subtitle.text = item.subTitle
-        holder.image.setImageResource(item.resId)
+        holder.subtitle.text = item.subtitle
+        holder.image.setImageResource(item.image)
     }
 
     object DiffCallback : DiffUtil.ItemCallback<NatureItem>() {

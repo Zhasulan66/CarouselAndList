@@ -11,7 +11,7 @@ class CarouselManager(
     private lateinit var adapter: CarouselAdapter
 
     fun setup() {
-        adapter = CarouselAdapter(initialItems.map { it.resId })
+        adapter = CarouselAdapter(initialItems.map { it.image })
         binding.viewPagerCarousel.adapter = adapter
 
         TabLayoutMediator(binding.carouselIndicator, binding.viewPagerCarousel) { _, _ ->
@@ -19,6 +19,6 @@ class CarouselManager(
     }
 
     fun updateCarousel(newList: List<NatureItem>) {
-        adapter.updateData(newList.map { it.resId })
+        adapter.updateData(newList.map { it.image })
     }
 }
