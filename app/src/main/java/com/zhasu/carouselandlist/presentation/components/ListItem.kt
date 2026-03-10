@@ -47,7 +47,7 @@ fun ListItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                painter = painterResource(natureItem.resId),
+                painter = painterResource(natureItem.image),
                 contentDescription = "Nature 1 img",
                 modifier = Modifier
                     .clip(RoundedCornerShape(20))
@@ -64,7 +64,7 @@ fun ListItem(
                     modifier = Modifier.padding(bottom = 4.dp)
                 )
                 Text(
-                    text = natureItem.subTitle,
+                    text = natureItem.subtitle,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Normal,
                 )

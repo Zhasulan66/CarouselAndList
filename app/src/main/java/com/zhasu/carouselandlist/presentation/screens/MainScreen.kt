@@ -43,7 +43,7 @@ fun MainScreen() {
     val fruitViewModel = hiltViewModel<FruitViewModel>()
     val fruitList by fruitViewModel.fruits.collectAsStateWithLifecycle()
 
-    val imagesOnly = fruitList.map { it.resId }
+    val imagesOnly = fruitList.map { it.image }
     var searchQuery by remember { mutableStateOf("") }
 
     val filteredItems = remember(searchQuery, fruitList) {
